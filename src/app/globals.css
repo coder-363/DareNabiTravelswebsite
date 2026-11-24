@@ -1,0 +1,671 @@
+/* ==========================================================================
+   DAR E NABI TRAVELS — DESIGN SYSTEM & ARCHITECTURAL FOUNDATIONS
+   Brand Message: "A journey of faith, guided with care."
+   Palette: Deep Burgundy #4A0711 | Warm Gold #D2A04A |
+            Warm Ivory #F3EEE6 | Muted Burgundy #6B202B
+   Typography: Cormorant Garamond (Display) · DM Sans (UI/Body) · Amiri (Arabic)
+   ========================================================================== */
+
+:root {
+  /* Core Brand Identity */
+  --color-burgundy: #4A0711;         /* Primary — Deep Burgundy */
+  --color-gold: #D2A04A;             /* Secondary Accent — Warm Gold */
+  --color-ivory: #F3EEE6;            /* Primary Background — Warm Ivory */
+  --color-burgundy-muted: #6B202B;   /* Supporting — Muted Burgundy */
+  --color-white: #FFFFFF;
+
+  /* Strictly Derived Tonal Scale (Zero conflicting or foreign hues) */
+  --color-burgundy-deep: #2D040A;    /* Silk-fill hover & deep dark accent */
+  --color-ink: #1F1214;              /* Warm Burgundy-Charcoal Ink (15.4:1 AAA on Ivory) */
+  --color-ink-muted: #5E4E51;        /* Warm Muted Ink (6.4:1 AA+ on Ivory) */
+  --color-ivory-soft: #F9F6F1;       /* Raised Editorial Panel (Menu / Drawer) */
+  --color-sand: #E8E0D4;             /* Warm Alternation Band */
+  --color-hairline: #D7CCBC;         /* 1px Delicate Border on Ivory */
+  --color-hairline-dark: rgba(210, 160, 74, 0.30); /* 1px Fine Gold Border on Burgundy */
+  --color-gold-text: #825D1B;        /* Accessible WCAG AA (5.1:1) Gold Text on Ivory */
+  --color-ivory-muted: rgba(243, 238, 230, 0.76);
+  --color-ivory-faint: rgba(243, 238, 230, 0.16);
+
+  /* Live Dynamic Atmosphere Tokens (Interpolated via FX-GL4) */
+  --atmo-bg: var(--color-ivory);
+  --atmo-fg: var(--color-ink);
+  --atmo-muted: var(--color-ink-muted);
+  --atmo-line: var(--color-hairline);
+
+  /* Typography Families (Injected by next/font/google) */
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-dm-sans), "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-arabic: var(--font-amiri), "Amiri", "Traditional Arabic", serif;
+
+  /* Fluid Typographic Scale */
+  --text-monument: clamp(3.25rem, 8.2vw, 7.75rem);
+  --text-display-xl: clamp(2.5rem, 5.4vw, 5.1rem);
+  --text-display-l: clamp(1.95rem, 3.6vw, 3.35rem);
+  --text-editorial: clamp(1.45rem, 2.35vw, 2.3rem);
+  --text-arabic-lg: clamp(1.45rem, 2.5vw, 2.45rem);
+  --text-body-lg: clamp(1.0625rem, 1.25vw, 1.22rem);
+  --text-body: clamp(0.95rem, 1.02vw, 1.05rem);
+  --text-meta: 0.8125rem;
+  --text-eyebrow: 0.72rem;
+
+  /* Spatial Grid & Rhythm */
+  --container-max: 1480px;
+  --gutter: clamp(20px, 5.5vw, 96px);
+  --grid-gap: clamp(16px, 2vw, 32px);
+  --section-pad: clamp(96px, 12.5vw, 184px);
+  --nav-height: 84px;
+
+  /* Shape Language */
+  --radius-editorial: 0px;
+  --radius-control: 2px;
+  --radius-arch: 999px 999px 0 0;
+
+  /* Motion Physics */
+  --ease-sakinah: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-threshold: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-tactile: cubic-bezier(0.33, 1, 0.68, 1);
+
+  --dur-micro: 240ms;
+  --dur-short: 420ms;
+  --dur-reveal: 950ms;
+  --dur-cinematic: 1450ms;
+
+  /* Live scroll velocity (updated by SmoothScroll) */
+  --scroll-velocity: 0;
+}
+
+/* ==========================================================================
+   BASE RESET & EDITORIAL DEFAULTS
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  scroll-behavior: auto;
+}
+
+body {
+  background-color: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.7;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Custom pointer cursor enhancement only when fine pointer is active */
+@media (hover: hover) and (pointer: fine) {
+  body.has-compass-cursor,
+  body.has-compass-cursor a,
+  body.has-compass-cursor button {
+    cursor: none;
+  }
+}
+
+::selection {
+  background-color: var(--color-burgundy);
+  color: var(--color-ivory);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Accessible Focus Rings (Warm Gold) */
+:focus-visible {
+  outline: 1.5px solid var(--color-gold);
+  outline-offset: 4px;
+  border-radius: var(--radius-control);
+}
+
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 24px;
+  z-index: 10000;
+  background: var(--color-burgundy);
+  color: var(--color-ivory);
+  padding: 12px 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: top var(--dur-micro) var(--ease-tactile);
+}
+.skip-link:focus {
+  top: 20px;
+}
+
+/* ==========================================================================
+   LAYOUT PRIMITIVES
+   ========================================================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+@media (max-width: 900px) {
+  .grid-12 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================================
+   TYPOGRAPHY UTILITIES
+   ========================================================================== */
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.font-arabic {
+  font-family: var(--font-arabic);
+  direction: rtl;
+  unicode-bidi: isolate;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.t-monument {
+  font-family: var(--font-serif);
+  font-size: var(--text-monument);
+  font-weight: 300;
+  line-height: 0.93;
+  letter-spacing: -0.03em;
+}
+
+.t-display-xl {
+  font-family: var(--font-serif);
+  font-size: var(--text-display-xl);
+  font-weight: 300;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+}
+
+.t-display-l {
+  font-family: var(--font-serif);
+  font-size: var(--text-display-l);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+}
+
+.t-editorial {
+  font-family: var(--font-serif);
+  font-size: var(--text-editorial);
+  font-weight: 400;
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+}
+
+.t-body-lg {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-lg);
+  font-weight: 400;
+  line-height: 1.72;
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: 1.72;
+}
+
+.t-meta {
+  font-family: var(--font-sans);
+  font-size: var(--text-meta);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* The ONLY uppercase token across the brand */
+.t-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-eyebrow);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.t-eyebrow--light {
+  color: var(--color-gold);
+}
+
+.t-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.78;
+}
+
+em.editorial-em {
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* ==========================================================================
+   SIGNATURE FINE GOLD LINKS, HAIRLINES & EDITORIAL PHOTOGRAPHY GRADE
+   ========================================================================== */
+
+.gold-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 5px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.gold-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-gold);
+  transform: scaleX(0.32);
+  transform-origin: left center;
+  transition: transform 0.55s var(--ease-sakinah);
+}
+
+.gold-link:hover::after,
+.gold-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.gold-link svg {
+  transition: transform 0.45s var(--ease-sakinah);
+}
+
+.gold-link:hover svg {
+  transform: translateX(5px);
+}
+
+.hairline {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-hairline);
+  border: none;
+}
+
+.hairline--dark {
+  background-color: var(--color-hairline-dark);
+}
+
+/* Unified Warm, Balanced Medium-Format Editorial Color Grade */
+.editorial-photo {
+  filter: saturate(0.92) contrast(1.03) sepia(0.07);
+  transition: filter 0.8s var(--ease-sakinah);
+}
+
+.arch-mask {
+  border-radius: var(--radius-arch);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   MAGNETIC SILK-FILL BUTTON (FX-UI3 — DEEP BURGUNDY & WARM GOLD)
+   ========================================================================== */
+
+.btn-sakinah {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 54px;
+  padding: 0 30px;
+  border-radius: var(--radius-control);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color var(--dur-short) var(--ease-tactile),
+    color var(--dur-short) var(--ease-tactile);
+}
+
+.btn-sakinah--primary {
+  background-color: var(--color-burgundy);
+  color: var(--color-ivory);
+  border: 1px solid var(--color-burgundy);
+}
+
+.btn-sakinah--ivory {
+  background-color: var(--color-ivory);
+  color: var(--color-burgundy);
+  border: 1px solid var(--color-ivory);
+}
+
+.btn-sakinah--outline {
+  background-color: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-hairline);
+}
+
+.btn-sakinah--outline-light {
+  background-color: transparent;
+  color: var(--color-ivory);
+  border: 1px solid rgba(210, 160, 74, 0.55);
+}
+
+.btn-sakinah__fill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translateY(102%);
+  transition: transform 0.6s var(--ease-sakinah);
+}
+
+.btn-sakinah--primary .btn-sakinah__fill {
+  background-color: var(--color-burgundy-muted);
+}
+
+.btn-sakinah--ivory .btn-sakinah__fill {
+  background-color: var(--color-gold);
+}
+
+.btn-sakinah--outline .btn-sakinah__fill {
+  background-color: var(--color-burgundy);
+}
+
+.btn-sakinah--outline-light .btn-sakinah__fill {
+  background-color: var(--color-ivory);
+}
+
+.btn-sakinah:hover .btn-sakinah__fill,
+.btn-sakinah:focus-visible .btn-sakinah__fill {
+  transform: translateY(0%);
+}
+
+.btn-sakinah--outline:hover {
+  color: var(--color-ivory);
+  border-color: var(--color-burgundy);
+}
+
+.btn-sakinah--outline-light:hover {
+  color: var(--color-burgundy);
+  border-color: var(--color-ivory);
+}
+
+.btn-sakinah--ivory:hover {
+  color: var(--color-burgundy-deep);
+  border-color: var(--color-gold);
+}
+
+.btn-sakinah__slot {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  height: 1.35em;
+  overflow: hidden;
+  line-height: 1.35em;
+}
+
+.btn-sakinah__text {
+  display: block;
+  transition: transform 0.55s var(--ease-sakinah);
+}
+
+.btn-sakinah__text--clone {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+}
+
+.btn-sakinah:hover .btn-sakinah__text {
+  transform: translateY(-100%);
+}
+
+.btn-sakinah__icon {
+  transition: transform 0.5s var(--ease-sakinah);
+}
+
+.btn-sakinah:hover .btn-sakinah__icon {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   SPLIT HEADING & ARABIC RTL SWEEP PRIMITIVES
+   ========================================================================== */
+
+.split-line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.split-line-inner {
+  display: block;
+  will-change: transform, opacity;
+}
+
+.arabic-sweep {
+  display: inline-block;
+  will-change: clip-path, opacity;
+}
+
+/* ==========================================================================
+   UNDERLINE EDITORIAL FORM CONTROLS (CONCIERGE DRAWER & FORMS)
+   ========================================================================== */
+
+.editorial-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editorial-field label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold-text);
+}
+
+.editorial-field input,
+.editorial-field select,
+.editorial-field textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-hairline);
+  padding: 12px 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-ink);
+  border-radius: 0;
+  transition: border-color var(--dur-short) var(--ease-tactile);
+}
+
+.editorial-field input:focus,
+.editorial-field select:focus,
+.editorial-field textarea:focus {
+  outline: none;
+  border-bottom-color: var(--color-burgundy);
+}
+
+.editorial-field input::placeholder,
+.editorial-field textarea::placeholder {
+  color: rgba(94, 78, 81, 0.56);
+}
+
+/* ==========================================================================
+   REDUCED MOTION — TIER 3 PURE STILLNESS
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.25s !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn-sakinah:hover .btn-sakinah__text {
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   HIGH CONTRAST MODE — PREFERS-CONTRAST: MORE
+   Strengthened focus rings, borders, and text contrast for accessibility
+   ========================================================================== */
+
+@media (prefers-contrast: more) {
+  :root {
+    /* Boost contrast tokens */
+    --color-ink: #0A0506;                 /* Deeper ink for max contrast */
+    --color-ink-muted: #2D1518;           /* Stronger muted ink */
+    --color-gold-text: #6B4A0D;           /* Higher contrast gold text */
+    --color-hairline: #A89B8A;            /* Darker hairlines */
+    --color-hairline-dark: rgba(210, 160, 74, 0.6); /* Stronger gold borders */
+    --color-burgundy: #2D040A;            /* Deeper burgundy */
+    --color-burgundy-muted: #1A0306;      /* Deeper muted burgundy */
+  }
+
+  /* Thicker, more visible focus rings */
+  :focus-visible {
+    outline: 2.5px solid var(--color-gold);
+    outline-offset: 4px;
+    border-radius: var(--radius-control);
+  }
+
+  /* Stronger form field borders */
+  .editorial-field input,
+  .editorial-field select,
+  .editorial-field textarea {
+    border-bottom: 2px solid var(--color-hairline);
+  }
+
+  .editorial-field input:focus,
+  .editorial-field select:focus,
+  .editorial-field textarea:focus {
+    border-bottom-color: var(--color-burgundy);
+    border-bottom-width: 2.5px;
+  }
+
+  /* Stronger button borders */
+  .btn-sakinah {
+    border-width: 2px;
+  }
+
+  .btn-sakinah--outline {
+    border: 2px solid var(--color-hairline);
+  }
+
+  .btn-sakinah--outline-light {
+    border: 2px solid rgba(210, 160, 74, 0.7);
+  }
+
+  .btn-sakinah--primary {
+    border: 2px solid var(--color-burgundy);
+  }
+
+  .btn-sakinah--ivory {
+    border: 2px solid var(--color-ivory);
+  }
+
+  /* Stronger hairlines */
+  .hairline,
+  .hairline--dark {
+    height: 2px;
+  }
+
+  /* Ensure skip link is more prominent */
+  .skip-link {
+    border: 2px solid var(--color-gold);
+    padding: 14px 24px;
+    font-weight: 600;
+  }
+
+  /* MagneticButton focus visible in high contrast */
+  .magnetic-btn:focus-visible {
+    outline: 2.5px solid var(--color-gold);
+    outline-offset: 4px;
+    border-radius: var(--radius-control);
+    box-shadow: 0 0 0 4px var(--color-burgundy);
+  }
+}
+
+/* ==========================================================================
+   PRINT STYLESHEET (FOR THE SACRED GUIDE UMRAH COMPANION PDF)
+   ========================================================================== */
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #1F1214 !important;
+  }
+
+  header,
+  footer,
+  nav,
+  .no-print,
+  canvas {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+}
